@@ -1,16 +1,21 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 
 const Protected = () => {
   const [message, setMessage] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false); // Estado para el usuario autenticado
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/protected/dashboard`, { withCredentials: true });
+        const response = await axios.get(`${API_URL}/protected/dashboard`, { withCredentials: true });
         setMessage(response.data.message);
         setIsAuthenticated(true); // Usuario autenticado
       } catch (error) {

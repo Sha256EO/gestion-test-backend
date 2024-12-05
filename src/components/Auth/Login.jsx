@@ -1,11 +1,16 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 
 const Login = () => {
   const [formData, setFormData] = useState({ username: '', password: '' });
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -15,7 +20,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, formData, { withCredentials: true });
+      const response = await axios.post(`${API_URL}/auth/login`, formData, { withCredentials: true });
       setMessage(response.data.message);
       navigate('/protected'); // Redirigir a la ruta protegida tras login exitoso
     } catch (error) {

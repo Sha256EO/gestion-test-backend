@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import axios from 'axios';
+import dotenv from 'dotenv';
 
+dotenv.config();
 
 const Register = () => {
     const [formData, setFormData] = useState({ username: '', password: '' });
     const [message, setMessage] = useState('');
+    const API_URL = import.meta.env.VITE_API_URL;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -15,7 +18,7 @@ const Register = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/register`, formData);
+            const response = await axios.post(`${API_URL}/auth/register`, formData);
             setMessage(response.data.message);
         } catch (error) {
             setMessage(error.response?.data.message || 'Error durante el registro');
