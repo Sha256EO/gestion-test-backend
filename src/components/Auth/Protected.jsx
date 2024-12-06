@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { apiClient } from './apiClient';
+import apiClient from '../../services/apiClient';
 
 const ProtectedPage = () => {
   const [data, setData] = useState('');
