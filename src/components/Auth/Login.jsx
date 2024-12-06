@@ -2,7 +2,6 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-
 const Login = () => {
   const [formData, setFormData] = useState({ username: '', password: '' });
   const [message, setMessage] = useState('');
@@ -17,11 +16,16 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${API_URL}/auth/login`, formData, { withCredentials: true });
-      setMessage(response.data.message);
-      navigate('/protected'); // Redirigir a la ruta protegida tras login exitoso
+      const response = await axios.post(`${API_URL}/auth/login`, formData);
+      const token = response.data.token;
+
+      if (token) {
+        sessionStorage.setItem('authToken', token); // Guarda el token en sessionStorage
+        setMessage(response.data.message);
+        navigate('/protected'); // Redirige a la ruta protegida
+      }
     } catch (error) {
-      setMessage(error.response?.data.message || 'Error logging in');
+      setMessage(error.response?.data.message || 'Error al iniciar sesión');
     }
   };
 
