@@ -1,30 +1,36 @@
 import { useEffect, useState } from 'react';
-import apiClient from '../../services/apiClient';
+import { useNavigate } from 'react-router-dom';
+import apiClient from '../services/apiClient'; // Cliente Axios
 
-const ProtectedPage = () => {
-  const [data, setData] = useState('');
+const Dashboard = () => {
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await apiClient.get('/protected/dashboard');
-        setData(response.data.message);
+        setMessage(response.data.message);
       } catch (error) {
-        setMessage(error.response?.data.message || 'Error al acceder a la página protegida');
+        setMessage(error.response?.data.message || 'Error al cargar la página');
       }
     };
 
     fetchData();
   }, []);
 
+  const handleLogout = () => {
+    sessionStorage.removeItem('authToken'); // Elimina el token de sessionStorage
+    navigate('/login'); // Redirige al login
+  };
+
   return (
     <div>
-      <h2>Protected Page</h2>
-      {data && <p>{data}</p>}
-      {message && <p>{message}</p>}
+      <h2>Dashboard</h2>
+      <p>{message}</p>
+      <button onClick={handleLogout}>Cerrar sesión</button> {/* Botón de logout */}
     </div>
   );
 };
 
-export default ProtectedPage;
+export default Dashboard;
