@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import apiClient from '../services/apiClient'; // Cliente Axios
+import apiClient from '../../services/apiClient';
 
 const Dashboard = () => {
   const [message, setMessage] = useState('');
